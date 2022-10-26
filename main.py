@@ -26,9 +26,10 @@ class IoPort(object):
             print("ПОРТ НЕПРАВИЛЬНО УКАЗАН ВСЁ СГОРИТ (Init)\n")
             exit(2)
         self.__ioPort = numPort
+        self.__voltage = 0
         inUsePorts.append(numPort)
         # IO.setup(self.__ioPort, IO.OUT)
-        # IO.output(self.__ioPort, 0)
+        # IO.output(self.__ioPort, self.__voltage)
 
     def get(self):
         if not (self.__ioPort in inUsePorts):
@@ -37,28 +38,79 @@ class IoPort(object):
         return self.__ioPort
 
     def lightOn(self):
+        if self.__voltage == 1:
+            print('Два раза зажгли одно и то же!!!\n')
+            exit(3)
+        self.__voltage = 1
         print('Порт номер ', self.__ioPort, ' светится\n')
-        # IO.output(self.__ioPort, 1)
+        # IO.output(self.__ioPort, self.__voltage)
 
     def lightOff(self):
+        if self.__voltage == 0:
+            print('Два раза выключили одно и то же!!!\n')
+            exit(3)
+        self.__voltage = 0
         print('Порт номер ', self.__ioPort, ' мрак\n')
         # IO.output(self.__ioPort, 0)
+
+    def isLightOn(self):
+        return self.__voltage == 1
+
+
+def outForDebug(boolean):
+    if boolean:
+        print(1, end=' ')
+    else:
+        print(0, end=' ')
+
+
+def debugShow(debugPorts):
+    if len(debugPorts) != 12:
+        print('Чето тут не так переделывай')
+        exit(4)
+    for i in range(0, 7):
+        for j in range(0, 7):
+            if i == 0 and j == 3:
+                outForDebug(debugPorts[0].isLightOn())
+            elif i == 1 and j == 4:
+                outForDebug(debugPorts[1].isLightOn())
+            elif i == 2 and j == 5:
+                outForDebug(debugPorts[2].isLightOn())
+            elif i == 3 and j == 6:
+                outForDebug(debugPorts[3].isLightOn())
+            elif i == 4 and j == 5:
+                outForDebug(debugPorts[4].isLightOn())
+            elif i == 5 and j == 4:
+                outForDebug(debugPorts[5].isLightOn())
+            elif i == 6 and j == 3:
+                outForDebug(debugPorts[6].isLightOn())
+            elif i == 5 and j == 2:
+                outForDebug(debugPorts[7].isLightOn())
+            elif i == 4 and j == 1:
+                outForDebug(debugPorts[8].isLightOn())
+            elif i == 3 and j == 0:
+                outForDebug(debugPorts[9].isLightOn())
+            elif i == 2 and j == 1:
+                outForDebug(debugPorts[10].isLightOn())
+            elif i == 1 and j == 2:
+                outForDebug(debugPorts[11].isLightOn())
+            else:
+                print(' ', end=' ')
+        print()
 
 
 def main():
     check()
     # IO.setmode(IO.BOARD)
-    hoursPorts = []
-    minutesPorts = []
+    ports = []
 
     for i in range(0, 12):
-        hoursPorts.append(IoPort(ioPorts[i]))
-    for i in range(12, 24):
-        minutesPorts.append(IoPort(ioPorts[i]))
-
-    if len(hoursPorts) != 12 and len(minutesPorts) != 12:
+        ports.append(IoPort(ioPorts[i]))
+    if len(ports) != 12:
         print("ПОРТОВ МНОГО ИЛИ МАЛО РАЗБЕРИСЬ\n (12)")
         exit(3)
+
+    debugShow(ports)
 
     return 0
 
