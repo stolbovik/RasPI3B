@@ -100,14 +100,17 @@ def debugShow(debugPorts):
 
 
 def timer(ports, start_minutes, start_seconds):
-    if start_minutes < 0 or start_minutes > 60:
+    if type(start_minutes) != int or type(start_seconds) != int:
+        print("НЕКОРРЕКТНОЕ ЧИСЛО")
+        return
+    if start_minutes < 0 or start_minutes > 59:
         print("НЕКОРРЕКТНОЕ КОЛИЧЕСТВО МИНУТ")
         return
-    if start_seconds < 0 or start_minutes > 60:
+    if start_seconds < 0 or start_seconds > 59:
         print("НЕКОРРЕКТНОЕ КОЛИЧЕСТВО СЕКУНД")
         return
     equals = False
-    secDelta = start_seconds - (start_seconds // 5) * 5
+    sec_delta = start_seconds - (start_seconds // 5) * 5
     minutes_port = start_minutes
     sec_port = start_seconds // 5 + 1
     while minutes_port >= 0:  # Цикл по всему времени
@@ -118,8 +121,8 @@ def timer(ports, start_minutes, start_seconds):
                 ports[minutes_port].lightOff()
                 equals = True
             sec = 0
-            secDelta = 5
-            while sec < secDelta:  # Цикл по 5 секундам (мигание одной лампочки)
+            sec_delta = 5
+            while sec < sec_delta:  # Цикл по 5 секундам (мигание одной лампочки)
                 ports[sec_port].lightOn()
                 debugShow(ports)
                 time.sleep(0.3)
