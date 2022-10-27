@@ -109,8 +109,8 @@ def timer(ports, start_minutes, start_seconds):
     if start_seconds < 0 or start_seconds > 59:
         print("НЕКОРРЕКТНОЕ КОЛИЧЕСТВО СЕКУНД")
         return
-    equals = False
-    sec_delta = start_seconds - (start_seconds // 5) * 5
+    is_equals = False
+    is_first_iteration = True
     minutes_port = start_minutes
     sec_port = start_seconds // 5 + 1
     while minutes_port >= 0:  # Цикл по всему времени
@@ -119,9 +119,12 @@ def timer(ports, start_minutes, start_seconds):
         while sec_port >= 0:  # Цикл по секундам в рамках одной минуты
             if sec_port == minutes_port and minutes_port != 0:
                 ports[minutes_port].lightOff()
-                equals = True
+                is_equals = True
             sec = 0
             sec_delta = 5
+            if is_first_iteration:
+                sec_delta = start_seconds - (start_seconds // 5) * 5
+                is_first_iteration = False
             while sec < sec_delta:  # Цикл по 5 секундам (мигание одной лампочки)
                 ports[sec_port].lightOn()
                 debugShow(ports)
@@ -131,9 +134,9 @@ def timer(ports, start_minutes, start_seconds):
                 sec = sec + 1
             sec_port = sec_port - 1
 
-            if equals:
+            if is_equals:
                 ports[minutes_port].lightOn()
-                equals = False
+                is_equals = False
         sec_port = 11
         if minutes_port != 0:
             ports[minutes_port].lightOff()
