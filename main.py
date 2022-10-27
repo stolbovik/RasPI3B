@@ -1,5 +1,8 @@
 # import RPi.GPIO as IO
 # import time
+import datetime
+import math
+import time
 
 ioPorts = [3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 19, 21, 22, 23, 24, 26, 29, 31, 32, 33, 35, 36, 37, 38, 40]
 groundPorts = [6, 9, 14, 20, 25, 30, 34, 39]
@@ -39,7 +42,7 @@ class IoPort(object):
 
     def lightOn(self):
         if self.__voltage == 1:
-            print('Два раза зажгли одно и то же!!!\n')
+            print('Порт ', self.__ioPort,' два раза зажгли одно и то же!!!\n')
             exit(3)
         self.__voltage = 1
         print('Порт номер ', self.__ioPort, ' светится\n')
@@ -55,6 +58,37 @@ class IoPort(object):
 
     def isLightOn(self):
         return self.__voltage == 1
+
+
+class Clock:
+
+    def __init__(self, io_ports_for_clock):
+        self.__hourNow = datetime.datetime.now().time().hour
+        self.__minuteNow = datetime.datetime.now().time().minute
+        self.__secondNow = datetime.datetime.now().time().second
+        if self.__hourNow >= 12:
+            self.__hourNow -= 12
+        self.__IoPorts = io_ports_for_clock
+        self.startClock()
+
+    def startClock(self):
+        while 1:
+            tempMinute = self.__IoPorts[math.floor(self.__minuteNow / 5)].get()
+            if not self.__IoPorts[math.floor(self.__minuteNow / 5)].isLightOn():
+                print('set minute')
+                self.__IoPorts[math.floor(self.__minuteNow / 5)].lightOn()
+            if math.floor(self.__minuteNow / 5) != math.floor(self.__secondNow / 5):
+                self.__IoPorts[math.floor(self.__secondNow / 5)].lightOn()
+            debugShow(self.__IoPorts)
+            time.sleep(0.5)
+            if math.floor(self.__minuteNow / 5) != math.floor(self.__secondNow / 5):
+                self.__IoPorts[math.floor(self.__secondNow / 5)].lightOff()
+            debugShow(self.__IoPorts)
+            time.sleep(0.5)
+            self.__minuteNow = datetime.datetime.now().time().minute
+            self.__secondNow = datetime.datetime.now().time().second
+            if self.__IoPorts[math.floor(self.__minuteNow / 5)].get() != tempMinute:
+                self.__IoPorts[math.floor(self.__minuteNow / 5)].lightOff()
 
 
 def outForDebug(boolean):
@@ -111,6 +145,7 @@ def main():
         exit(3)
 
     debugShow(ports)
+    cl = Clock(ports)
 
     return 0
 
