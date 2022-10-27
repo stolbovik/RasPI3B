@@ -144,9 +144,11 @@ def timer(ports, start_minutes, start_seconds):
                     time.sleep(0.7)
                     sec = sec + 1
             sec_port = sec_port - 1
+            if is_equals:
+                ports[minutes_port].lightOn()
+                is_equals = False
         sec_port = 11
-        if minutes_port != 0 and not is_equals:
-            is_equals = False
+        if minutes_port != 0:
             ports[minutes_port].lightOff()
         minutes_port = minutes_port - 1
     print("КОНЕЦ")
@@ -164,7 +166,7 @@ def main():
         print("ПОРТОВ МНОГО ИЛИ МАЛО РАЗБЕРИСЬ\n (12)")
         exit(3)
 
-    timer(ports, 2, 17)
+    timer(ports, 3, 27)
 
     return 0
 
