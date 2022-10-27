@@ -110,6 +110,7 @@ def main():
         print("ПОРТОВ МНОГО ИЛИ МАЛО РАЗБЕРИСЬ\n (12)")
         exit(3)
 
+    ooooo
     debugShow(ports)
 
     return 0
