@@ -60,6 +60,7 @@ class IoPort(object):
     def isLightOn(self):
         return self.__voltage == 1
 
+
 def outForDebug(boolean):
     if boolean:
         print(1, end=' ')
@@ -158,10 +159,8 @@ def timer(ports, start_minutes, start_seconds):
     # Вызов звукового сигнала TODO
 
 
-
 def secundomer(ports):
     sec = 0
-
     while True:
         for i in range(0, 12):
             for j in range(0, 5):
@@ -216,19 +215,6 @@ def main():
     if len(ports) != 12:
         print("ПОРТОВ МНОГО ИЛИ МАЛО РАЗБЕРИСЬ\n (12)")
         exit(3)
-
-
-    for i in range(0, 12):
-        ports.append(IoPort(ioPorts[i]))
-    if len(ports) != 12:
-        print("ПОРТОВ МНОГО ИЛИ МАЛО РАЗБЕРИСЬ\n (12)")
-        exit(3)
-
-    # debugShow(ports)
-
-    cl = Clock(ports)
-
-
 
     return 0
 
