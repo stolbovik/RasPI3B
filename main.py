@@ -39,7 +39,7 @@ class IoPort(object):
 
     def lightOn(self):
         if self.__voltage == 1:
-            print('Два раза зажгли одно и то же!!!\n')
+            print('Порт ', self.__ioPort,' два раза зажгли одно и то же!!!\n')
             exit(3)
         self.__voltage = 1
         print('Порт номер ', self.__ioPort, ' светится\n')
@@ -55,7 +55,6 @@ class IoPort(object):
 
     def isLightOn(self):
         return self.__voltage == 1
-
 
 def outForDebug(boolean):
     if boolean:
@@ -179,7 +178,6 @@ def main():
     #     exit(3)
 
     debugShow(ports)
-    #secundomer()
 
     return 0
 
