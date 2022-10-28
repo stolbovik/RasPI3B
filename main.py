@@ -1,5 +1,9 @@
 # import RPi.GPIO as IO
 # import time
+import sys
+import getopt
+from alarm import setUpAlarm
+
 
 ioPorts = [3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 19, 21, 22, 23, 24, 26, 29, 31, 32, 33, 35, 36, 37, 38, 40]
 groundPorts = [6, 9, 14, 20, 25, 30, 34, 39]
@@ -42,7 +46,7 @@ class IoPort(object):
             print('Два раза зажгли одно и то же!!!\n')
             exit(3)
         self.__voltage = 1
-        print('Порт номер ', self.__ioPort, ' светится\n')
+        # print('Порт номер ', self.__ioPort, ' светится\n')
         # IO.output(self.__ioPort, self.__voltage)
 
     def lightOff(self):
@@ -50,7 +54,7 @@ class IoPort(object):
             print('Два раза выключили одно и то же!!!\n')
             exit(3)
         self.__voltage = 0
-        print('Порт номер ', self.__ioPort, ' мрак\n')
+        # print('Порт номер ', self.__ioPort, ' мрак\n')
         # IO.output(self.__ioPort, 0)
 
     def isLightOn(self):
@@ -111,7 +115,15 @@ def main():
         exit(3)
 
     debugShow(ports)
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "t", ["time="])
+    except:
+        print("Неправильно параметры передал, лох!")
+        sys.exit(2)
 
+    for opt, arg in opts:
+        if opt in ("-t", "--time"):
+            setUpAlarm(ports, arg)
     return 0
 
 
