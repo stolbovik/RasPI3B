@@ -1,8 +1,10 @@
 # import RPi.GPIO as IO
+import sys
+import getopt
+from alarm import setUpAlarm
 import time
 
-= [3, 5, 7, 8, 10,
-ioPorts 11, 12, 13, 15, 16, 18, 19, 21, 22, 23, 24, 26, 29, 31, 32, 33, 35, 36, 37, 38, 40]
+ioPorts = [3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 19, 21, 22, 23, 24, 26, 29, 31, 32, 33, 35, 36, 37, 38, 40]
 groundPorts = [6, 9, 14, 20, 25, 30, 34, 39]
 uselessPorts = [1, 2, 4, 17, 27, 28]
 inUsePorts = []
@@ -180,7 +182,16 @@ def main():
     #     exit(3)
 
     debugShow(ports)
-    #secundomer()
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "t", ["time="])
+    except:
+        print("Неправильно параметры передал, лох!")
+        sys.exit(2)
+
+    for opt, arg in opts:
+        if opt in ("-t", "--time"):
+            setUpAlarm(ports, arg)
 
     return 0
 
