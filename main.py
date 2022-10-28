@@ -45,7 +45,7 @@ class IoPort(object):
 
     def lightOn(self):
         if self.__voltage == 1:
-            print('Порт ', self.__ioPort,' два раза зажгли одно и то же!!!\n')
+            print('Порт ', self.__ioPort, ' два раза зажгли одно и то же!!!\n')
             exit(3)
         self.__voltage = 1
         print('Порт номер ', self.__ioPort, ' светится\n')
@@ -208,20 +208,7 @@ class Clock:
                 temp_hours.lightOff()
 
 
-def main():
-    check()
-    # IO.setmode(IO.BOARD)
-    ports = []
-
-
-     for i in range(0, 12):
-         ports.append(IoPort(ioPorts[i]))
-     if len(ports) != 12:
-         print("ПОРТОВ МНОГО ИЛИ МАЛО РАЗБЕРИСЬ\n (12)")
-         exit(3)
-
-    debugShow(ports)
-
+def alarm(ports):
     try:
         opts, args = getopt.getopt(sys.argv[1:], "t", ["time="])
     except:
@@ -233,7 +220,16 @@ def main():
             setUpAlarm(ports, arg)
 
 
+def main():
+    check()
+    # IO.setmode(IO.BOARD)
+    ports = []
 
+    for i in range(0, 12):
+        ports.append(IoPort(ioPorts[i]))
+    if len(ports) != 12:
+        print("ПОРТОВ МНОГО ИЛИ МАЛО РАЗБЕРИСЬ\n (12)")
+        exit(3)
     return 0
 
 
