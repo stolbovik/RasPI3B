@@ -46,7 +46,7 @@ class IoPort(object):
             print('Два раза зажгли одно и то же!!!\n')
             exit(3)
         self.__voltage = 1
-        # print('Порт номер ', self.__ioPort, ' светится\n')
+        print('Порт номер ', self.__ioPort, ' светится\n')
         # IO.output(self.__ioPort, self.__voltage)
 
     def lightOff(self):
@@ -54,7 +54,7 @@ class IoPort(object):
             print('Два раза выключили одно и то же!!!\n')
             exit(3)
         self.__voltage = 0
-        # print('Порт номер ', self.__ioPort, ' мрак\n')
+        print('Порт номер ', self.__ioPort, ' мрак\n')
         # IO.output(self.__ioPort, 0)
 
     def isLightOn(self):
